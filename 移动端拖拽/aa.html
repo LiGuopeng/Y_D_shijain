@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Title</title>
+    <style>
+        div{
+            width: 100px;
+            height: 100px;
+            background: #000;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        div.odiv2{
+            top: 129px;
+            left: 130px;
+        }
+    </style>
+</head>
+<body>
+<div></div>
+<div class="odiv2"></div>
+</body>
+<script>
+     window.onload=function () {
+         let oDiv=document.getElementsByTagName('div');
+         for(var i=0;i<oDiv.length;i++){
+             dragApp(oDiv[i]);
+         }
+         function dragApp(obj){
+             obj.addEventListener('touchstart',function(ev){
+                 let touch=ev.targetTouches;
+                 let disX=touch[touch.length-1].clientX-obj.offsetLeft;
+                 let disY=touch[touch.length-1].clientY-obj.offsetTop;
+                 let id=touch[touch.length-1].identifier
+                 console.log(id);
+                 function fnMove(ev) {
+                     if(id==ev.changedTouches[0].identifier){
+                         console.log('你找的就是我')
+                         obj.style.left=ev.targetTouches[0].clientX-disX+'px';
+                         obj.style.top=ev.targetTouches[0].clientY-disY+'px';
+                     }
+                 }
+                 function fnEnd() {
+                     if(id==ev.changedTouches[0].identifier){
+                         obj.removeEventListener('touchmove',fnMove,false);
+                         obj.removeEventListener('touchend',fnEnd,false);
+                     }
+                 }
+                 obj.addEventListener('touchmove',fnMove,false);
+                 obj.addEventListener('touchend',fnEnd,false)
+             },false)
+         };
+     }
+</script>
+</html>
